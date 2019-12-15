@@ -52,7 +52,9 @@
       >
         <v-icon>mdi-minus</v-icon>
       </v-btn> -->
-      <v-toolbar-title v-text="title" />
+      <router-link to="/" class="toolbar-title">
+        <v-toolbar-title v-text="title" />
+      </router-link>
       <!-- <v-spacer />
       <v-btn
         icon
@@ -119,3 +121,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.toolbar-title {
+  color: inherit;
+  text-decoration: inherit;
+}
+</style>
