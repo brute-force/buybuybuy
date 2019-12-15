@@ -290,7 +290,7 @@
 </template>
 
 <script>
-import moment from 'moment-business-days';
+import moment from 'moment';
 import jsonata from 'jsonata';
 import { Money } from 'v-money';
 import LineChart from '@/components/LineChart';
@@ -321,7 +321,15 @@ export default {
   },
   async asyncData ({ params, $axios, error }) {
     try {
-      const { data: { 'Meta Data': metaData, 'Time Series (Daily)': data } } = await $axios.get(`/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${params.ticker}&outputsize=full&apikey=${process.env.apiKeyAlphaVantage}`);
+      // const { data: { 'Meta Data': metaData, 'Time Series (Daily)': data } } = await $axios.get(`/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${params.ticker}&outputsize=full&apikey=${process.env.apiKeyAlphaVantage}`);
+      const res = await $axios.get(`/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${params.ticker}&outputsize=full&apikey=${process.env.apiKeyAlphaVantage}`);
+
+      if (res.data.Note) {
+        return error({ message: 'API Rate Limit Exceeded. Try again in one minute.' });
+      }
+
+      const metaData = res.data['Meta Data'];
+      const data = res.data['Time Series (Daily)'];
 
       return {
         investmentInitial: '$10,000.00',
