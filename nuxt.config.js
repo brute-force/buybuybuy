@@ -85,7 +85,7 @@ export default {
     }
   },
   env: {
-    apiKeyAlphaVantage: ''
+    apiKeyAlphaVantage: process.env.API_KEY_ALPHA_VANTAGE
   },
   server: {
     port: 3000,
