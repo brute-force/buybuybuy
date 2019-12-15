@@ -1,6 +1,6 @@
 # BUY! BUY! BUY!
 
-This is a reactive historical stock return web app that returns the current value and dividends of your investment based on year. It charts the pricing data using [Chart.js](https://github.com/chartjs/Chart.js).  
+This is a reactive historical stock return web app that returns the current value and dividends of an investment based on year. If you didn't invest, then it's just the money you *would have* made :(. It charts the pricing data using [Chart.js](https://github.com/chartjs/Chart.js).  
   
 > You'll need an Alpha Vantage API key [here](https://www.alphavantage.co/support/#api-key) to plug into nuxt.config.js or set as environment variable API_KEY_ALPHA_VANTAGE.
 
