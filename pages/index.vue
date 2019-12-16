@@ -43,9 +43,10 @@ export default {
     };
   },
   watch: {
+    // debounce search to avoid hitting api limit
     search (val) {
       if (val) {
-        debounce(this.doSearch, 200)(val, this);
+        debounce(this.doSearch, 300)(val, this);
       }
     }
   },
