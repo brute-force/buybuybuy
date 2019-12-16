@@ -295,12 +295,6 @@ import jsonata from 'jsonata';
 import { Money } from 'v-money';
 import LineChart from '@/components/LineChart';
 
-// set the early month bank holidays
-moment.updateLocale('us', {
-  holidays: ['01-01', '07-04', '09-02'],
-  holidayFormat: 'MM-DD'
-});
-
 export default {
   components: {
     LineChart,
@@ -324,6 +318,7 @@ export default {
       // const { data: { 'Meta Data': metaData, 'Time Series (Daily)': data } } = await $axios.get(`/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${params.ticker}&outputsize=full&apikey=${process.env.apiKeyAlphaVantage}`);
       const res = await $axios.get(`/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${params.ticker}&outputsize=full&apikey=${process.env.apiKeyAlphaVantage}`);
 
+      // handle api rate limit
       if (res.data.Note) {
         return error({ message: 'API Rate Limit Exceeded. Try again in one minute.' });
       }
@@ -338,6 +333,7 @@ export default {
         years: [],
         yearSelected: { year: parseInt(moment().format('YYYY')), isCovered: true },
         metaData,
+        // rearrange api data to array
         data: jsonata('$spread($).{"key": $keys(), "4. close": $.*.\'4. close\', "5. adjusted close": $.*.\'5. adjusted close\', "7. dividend amount": $.*.\'7. dividend amount\'}').evaluate(data),
         chartData: {},
         money: {
@@ -354,14 +350,12 @@ export default {
     }
   },
   created () {
+    // calculate selected time period data
     this.changeYear(moment().year());
   },
   methods: {
     formatDate (date) {
       return moment(date).format('MMM DD, YYYY');
-    },
-    price (date, isAdjusted) {
-      return parseFloat(this.data.filter(el => el.key === date)[0][isAdjusted ? '5. adjusted close' : '4. close']).toFixed(2);
     },
     changeYear (year) {
       this.yearSelected = { year: parseInt(year), isCovered: true };
@@ -390,6 +384,7 @@ export default {
       let curr = graphData[0];
 
       // collect graph data (beginning of month by year)
+      // label only year for price data > 3 years old
       graphData.forEach((el, i) => {
         if ((moment(curr.key).month() !== moment(el.key).month() && moment(curr.key).year() === moment(el.key).year()) || moment(curr.key).year() !== moment(el.key).year()) {
           if (yearsCovered.length <= 3) {
@@ -404,7 +399,13 @@ export default {
             labels.unshift(moment(el.key).format('MM/YYYY'));
             data.unshift(parseFloat(el['4. close']));
           } else {
-            labels.unshift(moment(el.key).format('MM/DD/YYYY'));
+            // show full date label for earliest price data
+            if (this.data[this.data.length - 1] === el) {
+              labels.unshift(moment(el.key).format('MM/DD/YYYY'));
+            } else {
+              labels.unshift(moment(el.key).format('YYYY'));
+            }
+
             data.unshift(parseFloat(el['4. close']));
           }
         }
@@ -430,7 +431,11 @@ export default {
         ]
       };
     },
+    price (date, isAdjusted) {
+      return parseFloat(this.data.filter(el => el.key === date)[0][isAdjusted ? '5. adjusted close' : '4. close']).toFixed(2);
+    },
     totalReturn () {
+      // use adjusted close price for starting price
       const priceStart = parseFloat(this.price(this.dateStart, true));
       const priceEnd = parseFloat(this.price(this.dateEnd));
 
@@ -457,11 +462,3 @@ export default {
   text-align: right;
 }
 </style>
-<!--
-// 20191214012554
-// https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=NVDA&outputsize=full&apikey=9P6EFZ5ST69V2VKD
-
-{
-  "Note": "Thank you for using Alpha Vantage! Our standard API call frequency is 5 calls per minute and 500 calls per day. Please visit https://www.alphavantage.co/premium/ if you would like to target a higher API call frequency."
-}
--->
