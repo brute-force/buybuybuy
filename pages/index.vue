@@ -68,8 +68,8 @@ export default {
         this.error(err);
       }
     },
-    go ({ value }) {
-      this.$router.push({ path: `/${value}` });
+    go ({ text, value }) {
+      this.$router.push({ name: 'ticker', params: { ticker: value, company: text.replace(`${value} - `, '') } });
     }
   }
 };
