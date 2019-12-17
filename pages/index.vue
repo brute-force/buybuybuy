@@ -15,8 +15,6 @@
           :items="items"
           :loading="isLoading"
           :search-input.sync="search"
-          item-text="1. symbol"
-          item-value="2. name"
           hide-no-data
           label="Ticker"
           placeholder="Start typing to Search"
@@ -25,6 +23,7 @@
           clearable
           @input="go"
         />
+        </v-autocomplete>
       </div>
     </v-flex>
   </v-layout>
@@ -56,14 +55,20 @@ export default {
         this.isLoading = true;
         const { data: { bestMatches } } = await this.$axios.get(`/query?function=SYMBOL_SEARCH&keywords=${val}&apikey=${process.env.apiKeyAlphaVantage}`);
 
-        this.items = bestMatches;
+        this.items = bestMatches.map((item) => {
+          return {
+            text: item['1. symbol'] + ' - ' + item['2. name'],
+            value: item['1. symbol']
+          };
+        });
+
         this.isLoading = false;
       } catch (err) {
         this.error(err);
       }
     },
-    go (val) {
-      this.$router.push({ path: `/${val['1. symbol']}` });
+    go ({ value }) {
+      this.$router.push({ path: `/${value}` });
     }
   }
 };
