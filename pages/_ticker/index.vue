@@ -11,7 +11,7 @@
     </v-card-title>
     <v-card-subtitle class="py-2">
       <div class="headline font-weight-regular">
-        {{ $route.params.company }}
+        {{ companyName }}
       </div>
     </v-card-subtitle>
     <line-chart
@@ -347,6 +347,12 @@ export default {
         return error({ message: 'Ticker not found.' });
       }
 
+      // retrieve company name on refresh
+      if (typeof params.company === 'undefined') {
+        const { data: { bestMatches } } = await $axios.get(`/query?function=SYMBOL_SEARCH&keywords=${params.ticker}&apikey=${process.env.apiKeyAlphaVantage}`);
+        params.company = bestMatches.shift()['2. name'];
+      }
+
       const metaData = res.data['Meta Data'];
       const data = res.data['Time Series (Daily)'];
 
@@ -367,7 +373,8 @@ export default {
           suffix: '',
           precision: 2,
           masked: true
-        }
+        },
+        companyName: params.company
       };
     } catch (err) {
       error(err);
