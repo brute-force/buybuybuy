@@ -305,7 +305,11 @@ export default {
   },
   computed: {
     lastUpdated () {
-      return `last updated ${this.metaData['3. Last Refreshed']} ${this.metaData['5. Time Zone']}`;
+      if (this.metaData) {
+        return `last updated ${this.metaData['3. Last Refreshed']} ${this.metaData['5. Time Zone']}`;
+      } else {
+        return this.error({ message: 'API Rate Limit Exceeded. Try again in one minute.' });
+      }
     },
     // calculate current investment value
     investmentValue () {
@@ -321,6 +325,8 @@ export default {
       // handle api rate limit
       if (res.data.Note) {
         return error({ message: 'API Rate Limit Exceeded. Try again in one minute.' });
+      } else if (res.data['Error Message']) {
+        return error({ message: 'Ticker not found.' });
       }
 
       const metaData = res.data['Meta Data'];
