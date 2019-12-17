@@ -17,10 +17,11 @@
           :search-input.sync="search"
           hide-no-data
           label="Ticker"
-          placeholder="Start typing to Search"
+          placeholder="Start typing to search"
           prepend-icon="mdi-database-search"
           return-object
           clearable
+          class="search"
           @input="go"
         />
         </v-autocomplete>
@@ -73,3 +74,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.search {
+  min-width: 300px;
+}
+</style>
