@@ -9,6 +9,11 @@
         {{ $route.params.ticker }}
       </div>
     </v-card-title>
+    <v-card-subtitle class="py-2">
+      <div class="headline font-weight-regular">
+        {{ $route.params.company }}
+      </div>
+    </v-card-subtitle>
     <line-chart
       v-if="dateStart !== ''"
       :chart-data="chartData"
@@ -286,6 +291,19 @@
       mdi-clock
     </v-icon>
     <span class="caption grey--text font-weight-light">{{ lastUpdated }}</span>
+    <v-card-actions>
+      <v-spacer />
+      <v-btn
+        small
+        outlined
+        to="/"
+      >
+        <v-icon small class="mr-1">
+          mdi-database-search
+        </v-icon>
+        <span class="font-weight-light">search again</span>
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
