@@ -115,7 +115,7 @@
           <div
             class="price subheading font-weight-light grey--text mx-2 pa-0"
           >
-            {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price(dateStart)) }}
+            {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price(dateStart, true)) }}
           </div>
         </v-col>
       </v-row>
@@ -420,15 +420,15 @@ export default {
         if ((moment(curr.key).month() !== moment(el.key).month() && moment(curr.key).year() === moment(el.key).year()) || moment(curr.key).year() !== moment(el.key).year()) {
           if (yearsCovered.length <= 3) {
             labels.unshift(moment(curr.key).format('MM/YYYY'));
-            data.unshift(parseFloat(curr['4. close']));
+            data.unshift(parseFloat(curr['5. adjusted close']));
           } else if (moment(curr.key).month() === 0) {
             labels.unshift(moment(curr.key).format('YYYY'));
-            data.unshift(parseFloat(curr['4. close']));
+            data.unshift(parseFloat(curr['5. adjusted close']));
           }
         } else if (i === graphData.length - 1) {
           if (yearsCovered.length <= 3) {
             labels.unshift(moment(el.key).format('MM/YYYY'));
-            data.unshift(parseFloat(el['4. close']));
+            data.unshift(parseFloat(el['5. adjusted close']));
           } else {
             // show full date label for earliest price data
             if (this.data[this.data.length - 1] === el) {
@@ -437,7 +437,7 @@ export default {
               labels.unshift(moment(el.key).format('YYYY'));
             }
 
-            data.unshift(parseFloat(el['4. close']));
+            data.unshift(parseFloat(el['5. adjusted close']));
           }
         }
 
