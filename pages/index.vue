@@ -21,6 +21,7 @@
           prepend-icon="mdi-database-search"
           return-object
           clearable
+          autofocus
           class="search"
           @input="go"
         />
