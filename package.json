@@ -14,13 +14,14 @@
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.9.0",
     "@nuxtjs/vuetify": "^1.0.0",
-    "@nuxtjs/axios": "^5.3.6",
     "chart.js": "^2.9.3",
     "debounce": "^1.2.0",
     "jsonata": "^1.7.0",
     "moment": "^2.24.0",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.11.0",
+    "nuxt-logrocket": "^1.2.5",
     "v-money": "^0.8.1",
     "vue-chartjs": "^3.5.0"
   },

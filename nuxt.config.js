@@ -43,6 +43,7 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    'nuxt-logrocket',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios'
   ],
@@ -52,6 +53,10 @@ export default {
   */
   axios: {
     baseURL: process.env.BASE_URL || 'https://www.alphavantage.co'
+  },
+  logRocket: {
+    logRocketId: process.env.LOGROCKET_ID,
+    devModeAllowed: true
   },
   /*
   ** vuetify module configuration
