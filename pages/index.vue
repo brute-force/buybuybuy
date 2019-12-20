@@ -60,7 +60,7 @@ export default {
 
         this.items = bestMatches.map((item) => {
           return {
-            text: item['1. symbol'] + ' - ' + item['2. name'],
+            text: `${item['1. symbol']} - ${item['2. name']}`,
             value: item['1. symbol']
           };
         });
