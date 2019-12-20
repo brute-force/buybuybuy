@@ -312,6 +312,7 @@ import moment from 'moment';
 import jsonata from 'jsonata';
 import { Money } from 'v-money';
 import { mapGetters } from 'vuex';
+import consola from 'consola';
 import LineChart from '@/components/LineChart';
 
 export default {
@@ -336,6 +337,11 @@ export default {
       return (this.totalReturn() * investmentInitial) + investmentInitial;
     },
     ...mapGetters(['companyName'])
+  },
+  head () {
+    return {
+      title: `${this.$route.params.ticker} - ${this.companyName}`
+    };
   },
   async asyncData ({ params, $axios, error }) {
     try {
@@ -384,6 +390,7 @@ export default {
       return moment(date).format('MMM DD, YYYY');
     },
     changeYear (year) {
+      consola.info(`${this.$route.params.ticker} - ${this.companyName} ${year}`);
       this.yearSelected = { year: parseInt(year), isCovered: true };
 
       let exp = `$.$filter($, function($v, $i, $a) { $contains($v.key, /${year}/)})`;
