@@ -311,6 +311,7 @@
 import moment from 'moment';
 import jsonata from 'jsonata';
 import { Money } from 'v-money';
+import { mapGetters } from 'vuex';
 import LineChart from '@/components/LineChart';
 
 export default {
@@ -333,7 +334,8 @@ export default {
     investmentValue () {
       const investmentInitial = parseFloat(this.investmentInitial.replace(/\$|,/g, ''));
       return (this.totalReturn() * investmentInitial) + investmentInitial;
-    }
+    },
+    ...mapGetters(['companyName'])
   },
   async asyncData ({ params, $axios, error }) {
     try {
@@ -345,12 +347,6 @@ export default {
         return error({ message: 'API Rate Limit Exceeded. Try again in one minute.' });
       } else if (res.data['Error Message']) {
         return error({ message: 'Ticker not found.' });
-      }
-
-      // retrieve company name on refresh
-      if (typeof params.company === 'undefined') {
-        const { data: { bestMatches } } = await $axios.get(`/query?function=SYMBOL_SEARCH&keywords=${params.ticker}&apikey=${process.env.apiKeyAlphaVantage}`);
-        params.company = bestMatches.shift()['2. name'];
       }
 
       const metaData = res.data['Meta Data'];
@@ -373,8 +369,7 @@ export default {
           suffix: '',
           precision: 2,
           masked: true
-        },
-        companyName: params.company
+        }
       };
     } catch (err) {
       error(err);

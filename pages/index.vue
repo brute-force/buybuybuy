@@ -33,6 +33,7 @@
 
 <script>
 import debounce from 'debounce';
+import { mapActions } from 'vuex';
 
 export default {
   data () {
@@ -70,8 +71,10 @@ export default {
       }
     },
     go ({ text, value }) {
-      this.$router.push({ name: 'ticker', params: { ticker: value, company: text.replace(`${value} - `, '') } });
-    }
+      this.setCompanyName(text.replace(`${value} - `, ''));
+      this.$router.push(`/${value}`);
+    },
+    ...mapActions(['setCompanyName'])
   }
 };
 </script>
