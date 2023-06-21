@@ -21,7 +21,7 @@
     "debounce": "^1.2.0",
     "jsonata": "^1.7.0",
     "moment": "^2.24.0",
-    "nuxt": "^2.11.0",
+    "nuxt": "^3.4.3",
     "nuxt-logrocket": "^1.2.5",
     "v-money": "^0.8.1",
     "vue-chartjs": "^3.5.0"
